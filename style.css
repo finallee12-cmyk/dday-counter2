@@ -1,0 +1,317 @@
+/* =============================================
+   D-Day Counter — Base Styles
+   (Google Stitch UI 에셋과 병합을 고려한 최소한의 레이아웃만 정의)
+   ============================================= */
+
+/* ── CSS 변수 (스티치 병합 시 덮어씌워질 설계 토큰) ── */
+:root {
+  --color-bg: #0f172a;
+  --color-surface: rgba(255, 255, 255, 0.06);
+  --color-surface-hover: rgba(255, 255, 255, 0.1);
+  --color-border: rgba(255, 255, 255, 0.12);
+  --color-primary: #6366f1;
+  --color-primary-hover: #4f46e5;
+  --color-danger: #ef4444;
+  --color-danger-hover: #dc2626;
+  --color-text: #f1f5f9;
+  --color-text-muted: #94a3b8;
+  --color-dday: #22d3ee;
+  --color-future: #a3e635;
+  --color-past: #f97316;
+  --color-error: #f87171;
+
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+
+  --shadow-card: 0 4px 32px rgba(0, 0, 0, 0.35);
+  --transition: 0.22s cubic-bezier(0.4, 0, 0.2, 1);
+
+  --font-sans: system-ui, 'Segoe UI', sans-serif;
+  --font-mono: 'Courier New', monospace;
+}
+
+/* ── 리셋 & 기본 ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  min-height: 100vh;
+  padding: 24px 16px 60px;
+  line-height: 1.6;
+}
+
+/* 유틸 */
+.hidden { display: none !important; }
+
+/* ── 앱 래퍼 ── */
+#app {
+  max-width: 640px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+/* ── 헤더 ── */
+#app-header {
+  text-align: center;
+  padding: 16px 0;
+}
+#app-title {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  background: linear-gradient(135deg, #818cf8 0%, #22d3ee 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+#app-subtitle {
+  margin-top: 6px;
+  color: var(--color-text-muted);
+  font-size: 0.95rem;
+}
+
+/* ── 카드 ── */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  box-shadow: var(--shadow-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+/* ── 섹션 제목 ── */
+.section-title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  margin-bottom: 18px;
+}
+
+/* ── 폼 ── */
+.form-group { margin-bottom: 16px; }
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin-bottom: 6px;
+}
+.form-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  color: var(--color-text);
+  font-size: 1rem;
+  outline: none;
+  transition: border-color var(--transition), background var(--transition);
+}
+.form-input:focus {
+  border-color: var(--color-primary);
+  background: rgba(99, 102, 241, 0.08);
+}
+.form-input::placeholder { color: var(--color-text-muted); opacity: 0.7; }
+/* 날짜 input 색상 보정 */
+.form-input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.75);
+  cursor: pointer;
+}
+
+.form-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 6px;
+  flex-wrap: wrap;
+}
+
+.error-msg {
+  margin-top: 10px;
+  font-size: 0.85rem;
+  color: var(--color-error);
+}
+
+/* ── 버튼 ── */
+.btn {
+  flex: 1;
+  padding: 11px 20px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background var(--transition), transform var(--transition), opacity var(--transition);
+  letter-spacing: 0.02em;
+  min-width: 100px;
+}
+.btn:active { transform: scale(0.97); }
+
+.btn-primary {
+  background: var(--color-primary);
+  color: #fff;
+}
+.btn-primary:hover { background: var(--color-primary-hover); }
+
+.btn-danger {
+  background: transparent;
+  color: var(--color-danger);
+  border: 1px solid var(--color-danger);
+}
+.btn-danger:hover { background: rgba(239, 68, 68, 0.12); }
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  font-size: 1.1rem;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  transition: color var(--transition), background var(--transition);
+  line-height: 1;
+}
+.btn-icon:hover { color: var(--color-danger); background: rgba(239, 68, 68, 0.1); }
+
+/* ── 빈 상태 ── */
+.empty-state {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--color-text-muted);
+  background: var(--color-surface);
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius-lg);
+}
+.empty-icon { font-size: 2.8rem; display: block; margin-bottom: 12px; }
+
+/* ── 이벤트 목록 ── */
+.event-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── 이벤트 카드 ── */
+.event-card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: 18px 20px;
+  box-shadow: var(--shadow-card);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: transform var(--transition), box-shadow var(--transition);
+  animation: slideIn 0.3s var(--transition);
+}
+.event-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 36px rgba(0, 0, 0, 0.45);
+}
+
+/* D-Day 상태별 테두리 강조 */
+.event-card.is-today  { border-color: var(--color-dday);   }
+.event-card.is-future { border-color: transparent; }
+.event-card.is-past   { border-color: var(--color-past); opacity: 0.75; }
+
+/* 배지 */
+.event-badge {
+  font-family: var(--font-mono);
+  font-size: clamp(1rem, 4vw, 1.3rem);
+  font-weight: 800;
+  min-width: 80px;
+  text-align: center;
+  padding: 6px 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.06);
+  letter-spacing: -0.02em;
+  flex-shrink: 0;
+}
+.is-today  .event-badge { color: var(--color-dday); }
+.is-future .event-badge { color: var(--color-future); }
+.is-past   .event-badge { color: var(--color-past); }
+
+/* 카드 정보 */
+.event-info { flex: 1; min-width: 0; }
+.event-name {
+  font-size: 1rem;
+  font-weight: 700;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  margin-bottom: 2px;
+}
+.event-date-label {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+/* 삭제 버튼 */
+.event-delete-btn { flex-shrink: 0; }
+
+/* ── 축하 오버레이 ── */
+.celebration-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.72);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 999;
+  backdrop-filter: blur(6px);
+  animation: fadeIn 0.3s ease;
+}
+.celebration-content {
+  background: var(--color-surface);
+  border: 1px solid var(--color-dday);
+  border-radius: var(--radius-lg);
+  padding: 40px 32px;
+  text-align: center;
+  box-shadow: 0 0 60px rgba(34, 211, 238, 0.25);
+  animation: popIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.celebration-emoji {
+  font-size: 3.5rem;
+  display: block;
+  margin-bottom: 12px;
+  animation: bounce 0.8s infinite alternate ease-in-out;
+}
+.celebration-msg {
+  font-size: 1.4rem;
+  font-weight: 800;
+  color: var(--color-dday);
+  margin-bottom: 24px;
+}
+
+/* ── 애니메이션 ── */
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.8); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-8px); }
+}
+
+/* ── 반응형 ── */
+@media (max-width: 420px) {
+  .event-card { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .event-badge { min-width: auto; }
+}

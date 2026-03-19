@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Momentum | D-Day Dashboard</title>
+<!-- Tailwind CSS CDN -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Google Fonts: Inter -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&amp;display=swap" rel="stylesheet"/>
+<script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['Inter', 'sans-serif'],
+          },
+          colors: {
+            brand: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+            },
+          },
+        },
+      },
+    }
+  </script>
+<style data-purpose="custom-glassmorphism">
+    /* Custom glassmorphism effect for cards */
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    
+    .gradient-bg {
+      background: radial-gradient(circle at top right, #f8fafc, #e2e8f0);
+      min-height: 100vh;
+    }
+  </style>
+</head>
+<body class="font-sans text-slate-900 gradient-bg antialiased">
+<!-- BEGIN: MainHeader -->
+<header class="sticky top-0 z-50 glass-card px-6 py-4 mb-8">
+<div class="max-w-7xl mx-auto flex justify-between items-center">
+<div class="flex items-center gap-2">
+<div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white font-bold">M</div>
+<h1 class="text-xl font-bold tracking-tight text-slate-800">Momentum</h1>
+</div>
+<nav class="hidden md:flex gap-8 text-sm font-medium text-slate-500">
+<a class="text-brand-600" href="#">Dashboard</a>
+<a class="hover:text-brand-600 transition-colors" href="#">Calendar</a>
+<a class="hover:text-brand-600 transition-colors" href="#">Analytics</a>
+<a class="hover:text-brand-600 transition-colors" href="#">Settings</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="bg-brand-600 hover:bg-brand-700 text-white px-4 py-2 rounded-full text-sm font-semibold transition-all shadow-lg shadow-brand-500/20">
+          + New D-Day
+        </button>
+</div>
+</div>
+</header>
+<!-- END: MainHeader -->
+<main class="max-w-7xl mx-auto px-6 pb-12">
+<!-- BEGIN: HeroCountdown -->
+<section class="mb-12" data-purpose="primary-focus-event" id="hero-countdown">
+<div class="relative overflow-hidden rounded-3xl bg-slate-900 text-white p-8 md:p-12 shadow-2xl">
+<!-- Abstract Background Shape -->
+<div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-brand-600/20 rounded-full blur-3xl"></div>
+<div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+<div>
+<span class="inline-block px-3 py-1 bg-brand-500/20 text-brand-400 rounded-full text-xs font-bold uppercase tracking-widest mb-4">Featured Event</span>
+<h2 class="text-3xl md:text-4xl font-extrabold mb-2">Summer Product Launch</h2>
+<p class="text-slate-400 max-w-md">The biggest release of the year. Final testing and documentation in progress.</p>
+</div>
+<div class="flex gap-4 md:gap-8">
+<div class="text-center">
+<span class="block text-5xl md:text-7xl font-extrabold tabular-nums">14</span>
+<span class="text-xs uppercase tracking-widest text-slate-500 font-bold">Days</span>
+</div>
+<div class="text-center">
+<span class="block text-5xl md:text-7xl font-extrabold tabular-nums">08</span>
+<span class="text-xs uppercase tracking-widest text-slate-500 font-bold">Hours</span>
+</div>
+<div class="text-center">
+<span class="block text-5xl md:text-7xl font-extrabold tabular-nums">42</span>
+<span class="text-xs uppercase tracking-widest text-slate-500 font-bold">Mins</span>
+</div>
+</div>
+</div>
+</div>
+</section>
+<!-- END: HeroCountdown -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+<!-- BEGIN: UpcomingEvents -->
+<section class="lg:col-span-2 space-y-6" data-purpose="upcoming-list">
+<div class="flex items-center justify-between">
+<h3 class="text-xl font-bold text-slate-800">Upcoming Events</h3>
+<button class="text-brand-600 text-sm font-semibold hover:underline">View All</button>
+</div>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<!-- Event Card 1 -->
+<div class="glass-card p-5 rounded-2xl hover:shadow-xl transition-shadow group">
+<div class="flex items-start justify-between mb-4">
+<img alt="Category Icon" class="rounded-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAYLeyKJib9Jp6llR-v6qYdQNTM2gKsW5owi6qIfZv7wjbMo-pUoHgACxqTyUcTiglLB_dIsQGKeOn834nQ5kFgodB02fwPIsyIUpbfIIbHRNsMH_jd9TKGoHyfDmYXc6Du0txRBX36R8a-83jqcEWp9IC7zp0LzhoMn6O_w2lyU5v0BN73uQcMJEoy_jS3ZFGMbBi9VTPpX4JJ8MBRTlkHHrFDteqFDstpMay46-rFFp0u6SSGMfJU-xDIGd14YVu7NiXCF0qnaJI"/>
+<span class="bg-emerald-100 text-emerald-700 text-xs font-bold px-2 py-1 rounded">D-22</span>
+</div>
+<h4 class="font-bold text-slate-800 group-hover:text-brand-600 transition-colors">Team Retreat - Bali</h4>
+<p class="text-sm text-slate-500 mb-4">June 15, 2024</p>
+<div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+<div class="bg-brand-500 h-full" style="width: 65%;"></div>
+</div>
+</div>
+<!-- Event Card 2 -->
+<div class="glass-card p-5 rounded-2xl hover:shadow-xl transition-shadow group">
+<div class="flex items-start justify-between mb-4">
+<img alt="Category Icon" class="rounded-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDEasehbP_RbRiDi67EojGaLDssVRY6ueKygrJzhKnmI_EWM4goaahzx9XMLTKaTlGKfzyIEqgSuHJ9PjgXPzenM3n849Ryli75ppzoypgCpwzpDDZLKZrLlOcJIqjfFGU2p6e1mfdPVFfXqNHZQvGSNhSSWzo7vnS4T_JamHEeeSkMi6CrY2495Q7otw_HwJhT8fquRZS5uONb5tk0G9hxFTaouyIOHMkF7YczdEq0VhZyBTnzSHS4d85N6lpRzCHR1ZexAnOepl0"/>
+<span class="bg-amber-100 text-amber-700 text-xs font-bold px-2 py-1 rounded">D-45</span>
+</div>
+<h4 class="font-bold text-slate-800 group-hover:text-brand-600 transition-colors">Company 10th Anniversary</h4>
+<p class="text-sm text-slate-500 mb-4">July 08, 2024</p>
+<div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+<div class="bg-brand-500 h-full" style="width: 30%;"></div>
+</div>
+</div>
+<!-- Event Card 3 -->
+<div class="glass-card p-5 rounded-2xl hover:shadow-xl transition-shadow group">
+<div class="flex items-start justify-between mb-4">
+<img alt="Category Icon" class="rounded-xl" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDjc6uujETNmqNZEi99-Wa38M7i2wlfVETjc7NhtXPuvfWhmBEpbOMBKUDariwT0cXO5UdXs2BWPglSA7ZC_dYDMu9ej6ED6VuKQuqH950JDYq4NIaPq7kHcuU9bfkWjQ0TJknyHlhvvqulJmTme-7Kc1C5vhgCH6gIgtEvwchfU4YY6qyb4LNlJ1mvQa1JP4H6ANnU2ZztJcKShQgtVVQducGA53prlajAL29JWVXS4l5ftwFc8jqhvLU5Z2YleFRcmazzRjyzfm0"/>
+<span class="bg-purple-100 text-purple-700 text-xs font-bold px-2 py-1 rounded">D-120</span>
+</div>
+<h4 class="font-bold text-slate-800 group-hover:text-brand-600 transition-colors">Office Relocation</h4>
+<p class="text-sm text-slate-500 mb-4">September 22, 2024</p>
+<div class="w-full bg-slate-100 h-1.5 rounded-full overflow-hidden">
+<div class="bg-brand-500 h-full" style="width: 10%;"></div>
+</div>
+</div>
+<!-- Add New Placeholder Card -->
+<button class="border-2 border-dashed border-slate-300 rounded-2xl flex flex-col items-center justify-center p-5 text-slate-400 hover:border-brand-500 hover:text-brand-500 transition-all bg-white/30">
+<svg class="w-8 h-8 mb-2" fill="none" stroke="currentColor" viewbox="0 0 24 24"><path d="M12 4v16m8-8H4" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"></path></svg>
+<span class="font-semibold text-sm">Add New Event</span>
+</button>
+</div>
+</section>
+<!-- END: UpcomingEvents -->
+<!-- BEGIN: Sidebar -->
+<aside class="space-y-8">
+<!-- Quick Add Section -->
+<section class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100" data-purpose="quick-add-form">
+<h3 class="text-lg font-bold text-slate-800 mb-4">New D-Day</h3>
+<form class="space-y-4">
+<div>
+<label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Event Name</label>
+<input class="w-full border-slate-200 rounded-xl focus:ring-brand-500 focus:border-brand-500 text-sm" placeholder="What are you counting down to?" type="text"/>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div>
+<label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Date</label>
+<input class="w-full border-slate-200 rounded-xl focus:ring-brand-500 focus:border-brand-500 text-sm" type="date"/>
+</div>
+<div>
+<label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1">Category</label>
+<select class="w-full border-slate-200 rounded-xl focus:ring-brand-500 focus:border-brand-500 text-sm">
+<option>Work</option>
+<option>Personal</option>
+<option>Holiday</option>
+</select>
+</div>
+</div>
+<button class="w-full py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-colors" type="submit">
+              Create Countdown
+            </button>
+</form>
+</section>
+<!-- Past Events Section -->
+<section class="glass-card p-6 rounded-3xl shadow-sm" data-purpose="past-events">
+<h3 class="text-lg font-bold text-slate-800 mb-4">Recently Passed</h3>
+<ul class="space-y-4">
+<li class="flex items-center gap-4">
+<div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-lg">🏁</div>
+<div>
+<p class="text-sm font-bold text-slate-700">Q1 Review</p>
+<p class="text-xs text-slate-400">Passed 14 days ago</p>
+</div>
+</li>
+<li class="flex items-center gap-4">
+<div class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-lg">🎓</div>
+<div>
+<p class="text-sm font-bold text-slate-700">Internship Grad</p>
+<p class="text-xs text-slate-400">Passed 32 days ago</p>
+</div>
+</li>
+</ul>
+</section>
+</aside>
+<!-- END: Sidebar -->
+</div>
+</main>
+<!-- BEGIN: Footer -->
+<footer class="max-w-7xl mx-auto px-6 py-8 border-t border-slate-200 mt-8">
+<div class="flex flex-col md:flex-row justify-between items-center gap-4 text-slate-400 text-sm">
+<p>© 2024 Momentum Productivity. All rights reserved.</p>
+<div class="flex gap-6">
+<a class="hover:text-brand-600" href="#">Privacy Policy</a>
+<a class="hover:text-brand-600" href="#">Terms of Service</a>
+<a class="hover:text-brand-600" href="#">Help Center</a>
+</div>
+</div>
+</footer>
+<!-- END: Footer -->
+<script data-purpose="interactivity">
+    // This script could be used to handle form submission or real-time countdown updates.
+    console.log("Momentum Dashboard Initialized");
+  </script>
+</body></html>

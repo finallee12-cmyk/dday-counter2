@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>Momentum | D-Day 대시보드</title>
+  <meta name="description" content="나만의 D-Day 이벤트를 등록하고 남은 날짜를 실시간으로 확인하세요." />
+  <!-- Tailwind CSS CDN (from Stitch) -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <!-- Google Fonts: Inter (from Stitch) -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet"/>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: { sans: ['Inter', 'sans-serif'] },
+          colors: {
+            brand: {
+              50:  '#f0f9ff',
+              100: '#e0f2fe',
+              400: '#38bdf8',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+            },
+          },
+        },
+      },
+    }
+  </script>
+  <style data-purpose="custom-glassmorphism">
+    .glass-card {
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+    .gradient-bg {
+      background: radial-gradient(circle at top right, #f8fafc, #e2e8f0);
+      min-height: 100vh;
+    }
+    /* ── 애니메이션 ── */
+    @keyframes slideIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes popIn {
+      from { opacity: 0; transform: scale(0.85); }
+      to   { opacity: 1; transform: scale(1); }
+    }
+    @keyframes bounce {
+      from { transform: translateY(0); }
+      to   { transform: translateY(-8px); }
+    }
+    .event-card-anim { animation: slideIn 0.3s ease forwards; }
+
+    /* ── 히어로 진행 바 ── */
+    #hero-progress-bar { transition: width 0.6s ease; }
+
+    /* ── 배지 색상 ── */
+    .badge-today  { background: #fef3c7; color: #92400e; }
+    .badge-future { background: #d1fae5; color: #065f46; }
+    .badge-past   { background: #fee2e2; color: #991b1b; }
+
+    /* ── 카드 테두리 상태 ── */
+    .card-today  { border-left: 4px solid #f59e0b !important; }
+    .card-future { border-left: 4px solid #10b981 !important; }
+    .card-past   { border-left: 4px solid #ef4444 !important; opacity: 0.8; }
+
+    /* ── 히어로 D-Day 배지 ── */
+    #hero-dday-badge { transition: all 0.4s ease; }
+
+    /* ── 유틸 ── */
+    .hidden { display: none !important; }
+  </style>
+</head>
+<body class="font-sans text-slate-900 gradient-bg antialiased">
+
+<!-- ===== 헤더 (Stitch: MainHeader) ===== -->
+<header class="sticky top-0 z-50 glass-card px-6 py-4 mb-8" id="app-header">
+  <div class="max-w-7xl mx-auto flex justify-between items-center">
+    <div class="flex items-center gap-2">
+      <div class="w-8 h-8 bg-brand-600 rounded-lg flex items-center justify-center text-white font-bold select-none">M</div>
+      <h1 class="text-xl font-bold tracking-tight text-slate-800" id="app-title">Momentum</h1>
+    </div>
+    <nav class="hidden md:flex gap-8 text-sm font-medium text-slate-500">
+      <a class="text-brand-600" href="#">대시보드</a>
+      <a class="hover:text-brand-600 transition-colors" href="#">캘린더</a>
+      <a class="hover:text-brand-600 transition-colors" href="#">설정</a>
+    </nav>
+    <!-- 버튼 삭제됨 -->
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-6 pb-12">
+
+  <!-- ===== 히어로 카운트다운 (Stitch: HeroCountdown) ===== -->
+  <section class="mb-12" data-purpose="primary-focus-event" id="hero-countdown">
+    <div class="relative overflow-hidden rounded-3xl bg-slate-900 text-white p-8 md:p-12 shadow-2xl">
+      <!-- 장식 원형 -->
+      <div class="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 bg-brand-600/20 rounded-full blur-3xl"></div>
+      <div class="relative z-10 flex flex-col md:flex-row md:items-center justify-between gap-8">
+        <!-- 히어로 이벤트 정보 -->
+        <div id="hero-event-info">
+          <span class="inline-block px-3 py-1 bg-brand-500/20 text-brand-400 rounded-full text-xs font-bold uppercase tracking-widest mb-4">
+            🌟 대표 이벤트
+          </span>
+          <h2 class="text-3xl md:text-4xl font-extrabold mb-2" id="hero-event-title">이벤트를 추가해주세요</h2>
+          <p class="text-slate-400 max-w-md" id="hero-event-date">오른쪽 폼에서 첫 번째 이벤트를 등록해보세요.</p>
+          <!-- 진행 바 -->
+          <div class="mt-6 w-full max-w-sm">
+            <div class="flex justify-between text-xs text-slate-500 mb-1">
+              <span>진행률</span>
+              <span id="hero-progress-label">—</span>
+            </div>
+            <div class="w-full bg-slate-700 h-1.5 rounded-full overflow-hidden">
+              <div id="hero-progress-bar" class="bg-brand-500 h-full rounded-full" style="width: 0%;"></div>
+            </div>
+          </div>
+        </div>
+        <!-- 히어로 D-Day 숫자 표시 -->
+        <div class="flex gap-4 md:gap-8 shrink-0">
+          <div class="text-center">
+            <span id="hero-days" class="block text-5xl md:text-7xl font-extrabold tabular-nums">—</span>
+            <span class="text-xs uppercase tracking-widest text-slate-500 font-bold">Days</span>
+          </div>
+          <div class="text-center">
+            <span id="hero-hours" class="block text-5xl md:text-7xl font-extrabold tabular-nums">—</span>
+            <span class="text-xs uppercase tracking-widest text-slate-500 font-bold">Hours</span>
+          </div>
+          <div class="text-center">
+            <span id="hero-mins" class="block text-5xl md:text-7xl font-extrabold tabular-nums">—</span>
+            <span class="text-xs uppercase tracking-widest text-slate-500 font-bold">Mins</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ===== 메인 그리드 ===== -->
+  <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+
+    <!-- ── 이벤트 목록 (Stitch: UpcomingEvents) ── -->
+    <section class="lg:col-span-2 space-y-6" data-purpose="upcoming-list" id="events-section">
+      <div class="flex items-center justify-between">
+        <h3 class="text-xl font-bold text-slate-800">내 이벤트</h3>
+        <div class="flex items-center gap-4">
+          <select id="sort-select" class="text-sm bg-transparent border-none text-slate-500 font-semibold focus:ring-0 cursor-pointer">
+            <option value="dday-asc">임박한 순</option>
+            <option value="dday-desc">여유있는 순</option>
+            <option value="name-asc">이름순</option>
+          </select>
+          <button
+            id="reset-all-btn"
+            class="text-red-400 text-sm font-semibold hover:underline"
+          >전체 초기화</button>
+        </div>
+      </div>
+
+      <!-- 빈 상태 -->
+      <div id="empty-state" class="hidden border-2 border-dashed border-slate-300 rounded-2xl flex flex-col items-center justify-center p-12 text-slate-400 bg-white/30">
+        <span class="text-4xl mb-3">🗓️</span>
+        <p class="font-semibold">등록된 이벤트가 없습니다</p>
+        <p class="text-sm mt-1">오른쪽 폼에서 첫 번째 이벤트를 추가해보세요!</p>
+      </div>
+
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+        <!-- 이벤트 카드 렌더링 영역 (contents 클래스로 부모 그리드 공유) -->
+        <div id="event-list" class="contents"></div>
+
+        <!-- 새 이벤트 추가 플레이스홀더 버튼 (카드들과 같은 그리드 칸을 차지함) -->
+        <button
+          id="grid-add-btn"
+          class="flex flex-col items-center justify-center border-2 border-dashed border-slate-300 rounded-[24px] p-5 text-slate-400 hover:border-brand-500 hover:text-brand-500 transition-all bg-slate-50/50 hidden aspect-[4/5] min-h-[320px]"
+        >
+          <span class="text-4xl font-light mb-2">+</span>
+          <span class="font-semibold text-xs text-slate-500 uppercase tracking-widest">Add New Event</span>
+        </button>
+      </div>
+    </section>
+
+    <!-- ── 사이드바 (Stitch: Sidebar) ── -->
+    <aside class="space-y-8">
+
+      <!-- 이벤트 추가 폼 (Stitch: quick-add-form) -->
+      <section
+        class="bg-white p-6 rounded-3xl shadow-sm border border-slate-100"
+        data-purpose="quick-add-form"
+        id="form-section"
+      >
+        <h3 class="text-lg font-bold text-slate-800 mb-4">새 D-Day 만들기</h3>
+        <div class="space-y-4">
+          <div>
+            <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1" for="event-title-input">
+              이벤트 이름
+            </label>
+            <input
+              id="event-title-input"
+              class="w-full border-slate-200 rounded-xl focus:ring-brand-500 focus:border-brand-500 text-sm px-3 py-2 border outline-none transition"
+              placeholder="어떤 날을 기다리고 있나요?"
+              type="text"
+              maxlength="50"
+            />
+          </div>
+          <div class="grid grid-cols-2 gap-4">
+            <div>
+              <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1" for="event-date-input">
+                목표 날짜
+              </label>
+              <input
+                id="event-date-input"
+                class="w-full border-slate-200 rounded-xl focus:ring-brand-500 focus:border-brand-500 text-sm px-3 py-2 border outline-none transition"
+                type="date"
+              />
+            </div>
+            <div>
+              <label class="block text-xs font-bold text-slate-400 uppercase tracking-wider mb-1" for="event-category-input">
+                카테고리
+              </label>
+              <select id="event-category-input" class="w-full border-slate-200 rounded-xl focus:ring-brand-500 focus:border-brand-500 text-sm px-3 py-2 border outline-none transition">
+                <option value="Personal">Personal 👤</option>
+                <option value="Work">Work 💼</option>
+                <option value="Holiday">Holiday 🏖️</option>
+                <option value="Others">Others 📅</option>
+              </select>
+            </div>
+          </div>
+          <!-- 오류 메시지 -->
+          <p id="form-error-msg" class="text-red-500 text-xs hidden" role="alert"></p>
+          <!-- 추가 버튼 -->
+          <button
+            id="add-event-btn"
+            class="w-full py-3 bg-slate-900 text-white rounded-xl font-bold hover:bg-slate-800 transition-colors"
+            type="button"
+          >카운트다운 시작</button>
+        </div>
+      </section>
+
+      <!-- 지난 이벤트 (Stitch: past-events) -->
+      <section class="glass-card p-6 rounded-3xl shadow-sm" data-purpose="past-events" id="past-events-section">
+        <h3 class="text-lg font-bold text-slate-800 mb-4">지난 이벤트</h3>
+        <div id="past-empty" class="text-sm text-slate-400">지난 이벤트가 없습니다.</div>
+        <ul id="past-event-list" class="space-y-4"></ul>
+      </section>
+
+    </aside>
+  </div>
+</main>
+
+<!-- ===== 푸터 (Stitch: Footer) ===== -->
+<footer class="max-w-7xl mx-auto px-6 py-8 border-t border-slate-200 mt-8">
+  <div class="flex flex-col md:flex-row justify-between items-center gap-4 text-slate-400 text-sm">
+    <p>© 2024 Momentum. D-Day 카운터</p>
+    <div class="flex gap-6">
+      <a class="hover:text-brand-600" href="#">개인정보처리방침</a>
+      <a class="hover:text-brand-600" href="#">이용약관</a>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== 축하 오버레이 ===== -->
+<div
+  id="celebration-overlay"
+  class="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-[999] hidden"
+  role="status"
+  aria-live="polite"
+>
+  <div
+    id="celebration-content"
+    class="bg-white rounded-3xl p-10 text-center shadow-2xl border border-brand-200 max-w-sm mx-4"
+    style="animation: popIn 0.35s cubic-bezier(0.34,1.56,0.64,1) forwards;"
+  >
+    <span class="text-5xl block mb-3" style="animation: bounce 0.8s infinite alternate ease-in-out;">🎉</span>
+    <p id="celebration-msg" class="text-xl font-extrabold text-slate-800 mb-6">오늘이 바로 그날!</p>
+    <button
+      id="close-celebration-btn"
+      class="w-full py-3 bg-brand-600 text-white rounded-xl font-bold hover:bg-brand-700 transition-colors"
+    >확인</button>
+  </div>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
