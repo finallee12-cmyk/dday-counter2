@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://dday-counter2.vercel.app/sitemap.xml
